@@ -39,16 +39,16 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.cgpa > 10 || formData.cgpa < 0) {
-        addToast('Invalid CGPA. Please enter a value between 0 and 10.', 'warning');
-        return;
+      addToast('Invalid CGPA. Please enter a value between 0 and 10.', 'warning');
+      return;
     }
     if (!formData.college) {
-        addToast('Please select your college.', 'warning');
-        return;
+      addToast('Please select your college.', 'warning');
+      return;
     }
     try {
       const data = await register(formData);
-      addToast('Registration successful! Welcome to RankRadar.', 'success');
+      addToast('Registration successful! Welcome to Gradevo.', 'success');
       if (data?.collegeWarning) {
         addToast(data.collegeWarning, 'warning');
       }
@@ -63,92 +63,92 @@ const Register = () => {
 
   return (
     <div className="min-h-screen bg-background-light flex items-center justify-center p-4">
-       <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[100px]"></div>
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+        <div className="absolute -bottom-[20%] -right-[10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[100px]"></div>
       </div>
-      
+
       <div className="bg-white border border-slate-200 p-8 rounded-2xl shadow-xl w-full max-w-2xl relative z-10 backdrop-blur-xl">
         <div className="flex flex-col items-center mb-8">
-            <h2 className="text-2xl font-bold text-slate-900">Create Account</h2>
-            <p className="text-slate-500 text-sm">Join the leaderboard</p>
+          <h2 className="text-2xl font-bold text-slate-900">Create Account</h2>
+          <p className="text-slate-500 text-sm">Join the leaderboard</p>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                 <label className={labelClasses}>Full Name</label>
-                 <input type="text" name="name" placeholder="John Doe" onChange={handleChange} className={inputClasses} required />
+              <label className={labelClasses}>Full Name</label>
+              <input type="text" name="name" placeholder="John Doe" onChange={handleChange} className={inputClasses} required />
             </div>
             <div>
-                 <label className={labelClasses}>Email</label>
-                 <input type="email" name="email" placeholder="john@example.com" onChange={handleChange} className={inputClasses} required />
+              <label className={labelClasses}>Email</label>
+              <input type="email" name="email" placeholder="john@example.com" onChange={handleChange} className={inputClasses} required />
             </div>
           </div>
 
           <div>
-               <label className={labelClasses}>Password</label>
-               <input type="password" name="password" placeholder="••••••••" onChange={handleChange} className={inputClasses} required />
+            <label className={labelClasses}>Password</label>
+            <input type="password" name="password" placeholder="••••••••" onChange={handleChange} className={inputClasses} required />
           </div>
 
           <div>
-               <label className={labelClasses}>College</label>
-               <CustomSelect
-                 name="college"
-                 value={formData.college}
-                 onChange={handleChange}
-                 options={COLLEGE_LIST}
-                 placeholder="Search your college..."
-               />
+            <label className={labelClasses}>College</label>
+            <CustomSelect
+              name="college"
+              value={formData.college}
+              onChange={handleChange}
+              options={COLLEGE_LIST}
+              placeholder="Search your college..."
+            />
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <div>
-                <label className={labelClasses}>CGPA</label>
-                <input type="number" name="cgpa" placeholder="9.5" step="0.01" onChange={handleChange} className={inputClasses} required />
-             </div>
-             <div>
-                <label className={labelClasses}>Batch</label>
-                <input type="number" name="batch" placeholder="2024" onChange={handleChange} className={inputClasses} required />
-             </div>
+            <div>
+              <label className={labelClasses}>CGPA</label>
+              <input type="number" name="cgpa" placeholder="9.5" step="0.01" onChange={handleChange} className={inputClasses} required />
+            </div>
+            <div>
+              <label className={labelClasses}>Batch</label>
+              <input type="number" name="batch" placeholder="2024" onChange={handleChange} className={inputClasses} required />
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                  <label className={labelClasses}>Degree</label>
-                  <CustomSelect
-                    name="degree"
-                    value={formData.degree}
-                    onChange={handleChange}
-                    options={getDegrees()}
-                  />
-              </div>
-              <div>
-                  <label className={labelClasses}>Branch</label>
-                  <CustomSelect
-                    name="branch"
-                    value={formData.branch}
-                    onChange={handleChange}
-                    options={getBranches(formData.degree)}
-                  />
-              </div>
-              <div>
-                  <label className={labelClasses}>Specialization</label>
-                  <CustomSelect
-                    name="specialization"
-                    value={formData.specialization}
-                    onChange={handleChange}
-                    options={getSpecializations(formData.degree, formData.branch)}
-                  />
-              </div>
+            <div>
+              <label className={labelClasses}>Degree</label>
+              <CustomSelect
+                name="degree"
+                value={formData.degree}
+                onChange={handleChange}
+                options={getDegrees()}
+              />
+            </div>
+            <div>
+              <label className={labelClasses}>Branch</label>
+              <CustomSelect
+                name="branch"
+                value={formData.branch}
+                onChange={handleChange}
+                options={getBranches(formData.degree)}
+              />
+            </div>
+            <div>
+              <label className={labelClasses}>Specialization</label>
+              <CustomSelect
+                name="specialization"
+                value={formData.specialization}
+                onChange={handleChange}
+                options={getSpecializations(formData.degree, formData.branch)}
+              />
+            </div>
           </div>
 
           <button type="submit" className="w-full bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/25 text-white py-3.5 rounded-xl font-bold transition-all active:scale-95 mt-4">
-            Register for RankRadar
+            Register for Gradevo
           </button>
         </form>
 
         <p className="text-center text-slate-500 text-sm mt-6">
-            Already have an account? <Link to="/login" className="text-primary hover:text-orange-600 transition-colors font-medium">Login here</Link>
+          Already have an account? <Link to="/login" className="text-primary hover:text-orange-600 transition-colors font-medium">Login here</Link>
         </p>
       </div>
     </div>

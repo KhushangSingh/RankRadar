@@ -17,7 +17,7 @@ const PrivateRoute = ({ children }) => {
   if (loading) return <div className="min-h-screen bg-background-light flex items-center justify-center text-primary">
      <div className="flex flex-col items-center gap-4">
         <span className="material-symbols-outlined text-4xl animate-spin">refresh</span>
-        <p className="text-sm font-medium animate-pulse text-slate-500">Loading RankRadar...</p>
+        <p className="text-sm font-medium animate-pulse text-slate-500">Loading Gradevo...</p>
      </div>
   </div>;
   

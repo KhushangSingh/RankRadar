@@ -76,7 +76,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  res.send('RankRadar API is running...');
+  res.send('Gradevo API is running...');
 });
 
 // ─── Routes ───────────────────────────────────────────────────────────────────

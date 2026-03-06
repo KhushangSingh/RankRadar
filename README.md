@@ -1,4 +1,4 @@
-# RankRadar
+# Gradevo
 
 Anonymous CGPA leaderboard for college students. See where you rank in your branch, specialisation, and batch — without revealing your identity to peers unless you add them as friends.
 
@@ -12,7 +12,7 @@ Anonymous CGPA leaderboard for college students. See where you rank in your bran
 | Backend | Node.js + Express 5 |
 | Database | MongoDB Atlas (Mongoose) |
 | Auth | JWT (7-day sessions, bcryptjs) |
-| Hosting | Render (API) + Netlify/Vercel (client) |
+| Hosting | Render (API) + Vercel (client) |
 
 ---
 
@@ -24,9 +24,10 @@ Anonymous CGPA leaderboard for college students. See where you rank in your bran
 
 ### 1. Clone & install
 ```bash
-git clone https://github.com/<your-username>/RankRadar.git
-cd RankRadar
-npm run setup   # installs root, client, and server deps
+git clone https://github.com/KhushangSingh/Gradevo.git
+cd Gradevo
+cd client && npm install
+cd ../server && npm install
 ```
 
 ### 2. Configure environment variables
@@ -37,7 +38,7 @@ Copy `server/.env.example` → `server/.env` and fill in:
 PORT=5000
 NODE_ENV=development
 MONGO_URI=<your MongoDB Atlas connection string>
-JWT_SECRET=<long random string — e.g. output of: openssl rand -base64 64>
+JWT_SECRET=<long random string>
 CLIENT_URL=http://localhost:5173
 ```
 
@@ -62,26 +63,23 @@ Visit http://localhost:5173
 ## Production Deployment
 
 ### Backend (Render)
-1. Create a new **Web Service** pointing to the `server/` folder (or root with start command `cd server && npm start`).
+1. Create a new **Web Service**, Root Directory: `server`
 2. Set these environment variables on Render:
 
 | Variable | Value |
 |----------|-------|
 | `NODE_ENV` | `production` |
-| `PORT` | `5000` (Render overrides automatically) |
 | `MONGO_URI` | Your Atlas URI |
-| `JWT_SECRET` | A new strong secret (different from dev) |
-| `CLIENT_URL` | Your deployed frontend URL (e.g. `https://rankradar.netlify.app`) |
+| `JWT_SECRET` | A strong secret |
+| `CLIENT_URL` | Your deployed frontend URL |
 
-### Frontend (Netlify / Vercel)
-1. Set build command: `npm run build`, publish directory: `dist`.
+### Frontend (Vercel)
+1. Root Directory: `client`, Build Command: `npm run build`, Output: `dist`
 2. Set environment variable:
 
 | Variable | Value |
 |----------|-------|
-| `VITE_API_URL` | Your Render backend URL (e.g. `https://rankradar-api.onrender.com`) |
-
-> **Note:** The file `client/.env.production` is committed with a placeholder URL. You can either update it directly or override it via your hosting provider's dashboard.
+| `VITE_API_URL` | Your Render backend URL |
 
 ---
 

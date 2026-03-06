@@ -17,10 +17,10 @@ const Sidebar = () => {
                         <span className="material-symbols-outlined text-xl">show_chart</span>
                     </div>
                 ) : (
-                    <img src="/RR-logo.png" alt="RankRadar" onError={() => setLogoError(true)} className="w-10 h-10 rounded-xl object-cover shadow-lg shadow-primary/20 shrink-0" />
+                    <img src="/RR-logo.png" alt="Gradevo" onError={() => setLogoError(true)} className="w-10 h-10 rounded-xl object-cover shadow-lg shadow-primary/20 shrink-0" />
                 )}
                 <div>
-                    <h1 className="text-slate-900 font-bold text-lg leading-tight">RankRadar</h1>
+                    <h1 className="text-slate-900 font-bold text-lg leading-tight">Gradevo</h1>
                     <p className="text-slate-500 text-xs">Student Leaderboard</p>
                 </div>
             </div>
@@ -44,13 +44,13 @@ const Sidebar = () => {
                 <div className="p-4 border-t border-slate-200">
                     <Link to="/profile" className="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors mb-2 group">
                         <div className="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center border-2 border-primary/30 text-slate-700 font-bold text-lg">
-                             {user.name.charAt(0).toUpperCase()}
+                            {user.name.charAt(0).toUpperCase()}
                         </div>
                         <div className="flex flex-col overflow-hidden flex-1">
                             <p className="text-slate-900 text-sm font-medium truncate">{user.name}</p>
                             <p className="text-slate-500 text-xs">{user.degree} • {user.branch}</p>
                         </div>
-                         <span className="material-symbols-outlined text-slate-400 text-sm group-hover:text-primary transition-colors">chevron_right</span>
+                        <span className="material-symbols-outlined text-slate-400 text-sm group-hover:text-primary transition-colors">chevron_right</span>
                     </Link>
                     <button onClick={logout} className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-slate-500 hover:bg-red-50 hover:text-red-600 transition-colors text-sm font-medium border border-transparent hover:border-red-200">
                         <span className="material-symbols-outlined text-sm">logout</span>

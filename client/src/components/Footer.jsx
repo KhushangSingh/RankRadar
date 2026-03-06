@@ -5,7 +5,7 @@ const Footer = () => {
         <footer className="bg-white border-t border-slate-200 py-8 px-6 mt-auto">
             <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
                 <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6">
-                    <p className="text-slate-400 font-bold text-sm">© {new Date().getFullYear()} RankRadar. All rights reserved.</p>
+                    <p className="text-slate-400 font-bold text-sm">© {new Date().getFullYear()} Gradevo. All rights reserved.</p>
                     <div className="hidden md:block w-1.5 h-1.5 rounded-full bg-slate-200"></div>
                     <a
                         href="http://khushangsingh.vercel.app/"
