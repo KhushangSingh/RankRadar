@@ -1,0 +1,220 @@
+import React, { useState, useContext, useEffect } from 'react';
+import axios from 'axios';
+import AuthContext from '../context/AuthContext';
+import ToastContext from '../context/ToastContext';
+import { useNavigate } from 'react-router-dom';
+import { getDegrees, getBranches, getSpecializations } from '../utils/academicMap';
+import CustomSelect from '../components/CustomSelect';
+import COLLEGE_LIST from '../utils/collegeList';
+
+const Profile = () => {
+    const { user, fetchUser, logout } = useContext(AuthContext);
+    const { addToast, openConfirm } = useContext(ToastContext);
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        cgpa: '',
+        college: '',
+        degree: '',
+        branch: '',
+        specialization: '',
+        batch: ''
+    });
+    const [isEditing, setIsEditing] = useState(false);
+
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                name: user.name || '',
+                email: user.email || '',
+                cgpa: user.cgpa || '',
+                college: user.college || '',
+                degree: user.degree || '',
+                branch: user.branch || '',
+                specialization: user.specialization || '',
+                batch: user.batch || ''
+            });
+        }
+    }, [user]);
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'degree') {
+            const firstBranch = getBranches(value)[0] || formData.branch;
+            const firstSpec = getSpecializations(value, firstBranch)[0] || 'Core';
+            setFormData({ ...formData, degree: value, branch: firstBranch, specialization: firstSpec });
+        } else if (name === 'branch') {
+            const firstSpec = getSpecializations(formData.degree, value)[0] || 'Core';
+            setFormData({ ...formData, branch: value, specialization: firstSpec });
+        } else {
+            setFormData({ ...formData, [name]: value });
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await axios.put('/api/users/profile', formData);
+            addToast('Profile updated successfully!', 'success');
+            setIsEditing(false);
+            fetchUser(); // Refresh context
+        } catch (error) {
+            addToast(error.response?.data?.message || 'Update failed', 'error');
+        }
+    };
+
+    const handleDeleteAccount = async () => {
+        const confirmed = await openConfirm(
+            'Delete your account?',
+            'This action is permanent and cannot be undone. All your data will be erased.'
+        );
+        if (confirmed) {
+            try {
+                await axios.delete('/api/users/profile');
+                addToast('Account deleted successfully.', 'info');
+                logout();
+                navigate('/');
+            } catch (error) {
+                addToast(error.response?.data?.message || 'Delete failed', 'error');
+            }
+        }
+    }
+
+    const inputClasses = "w-full bg-slate-50 border border-slate-200 hover:border-primary/50 hover:bg-white rounded-xl px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-primary/50 focus:bg-white focus:ring-1 focus:ring-primary/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed";
+    const labelClasses = "text-xs font-medium text-slate-500 uppercase ml-1 block mb-1";
+
+    return (
+        <div className="max-w-2xl mx-auto">
+             <div className="flex justify-between items-center mb-6">
+                <h2 className="text-3xl font-bold text-slate-900">My Profile</h2>
+                <button 
+                    onClick={() => {
+                        if (isEditing) {
+                            // Cancel action - reset form
+                            setFormData({
+                                name: user.name || '',
+                                email: user.email || '',
+                                cgpa: user.cgpa || '',
+                                college: user.college || '',
+                                degree: user.degree || '',
+                                branch: user.branch || '',
+                                specialization: user.specialization || '',
+                                batch: user.batch || ''
+                            });
+                        }
+                        setIsEditing(!isEditing);
+                    }}
+                    className={`px-4 py-2 rounded-xl text-sm font-bold transition-all border ${isEditing ? 'bg-red-500/10 text-red-500 border-red-200 hover:bg-red-500/20' : 'bg-primary/10 text-primary border-primary/20 hover:bg-primary/20'}`}
+                >
+                    {isEditing ? 'Cancel Editing' : 'Edit Profile'}
+                </button>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-2xl p-8 relative overflow-hidden shadow-sm backdrop-blur-xl">
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div className="md:col-span-2 flex items-center gap-4 mb-2">
+                            <div className="w-20 h-20 rounded-full bg-slate-200 flex items-center justify-center border-4 border-slate-50 text-slate-700 font-bold text-3xl shadow-lg">
+                                 {formData.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <h3 className="text-slate-900 text-lg font-bold">{formData.name}</h3>
+                                <p className="text-slate-500 text-sm">{formData.email}</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className={labelClasses}>Full Name</label>
+                            <input type="text" name="name" value={formData.name} onChange={handleChange} className={inputClasses} disabled={!isEditing} />
+                        </div>
+                         <div>
+                            <label className={labelClasses}>Email</label>
+                            <input type="email" name="email" value={formData.email} onChange={handleChange} className={inputClasses} disabled={!isEditing} />
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label className={labelClasses}>College</label>
+                        <CustomSelect
+                            name="college"
+                            value={formData.college}
+                            onChange={handleChange}
+                            options={COLLEGE_LIST}
+                            placeholder="Search your college..."
+                            disabled={!isEditing}
+                        />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label className={labelClasses}>Degree</label>
+                            <CustomSelect
+                                name="degree"
+                                value={formData.degree}
+                                onChange={handleChange}
+                                options={getDegrees()}
+                                disabled={!isEditing}
+                            />
+                        </div>
+                        <div>
+                            <label className={labelClasses}>Branch</label>
+                            <CustomSelect
+                                name="branch"
+                                value={formData.branch}
+                                onChange={handleChange}
+                                options={getBranches(formData.degree)}
+                                disabled={!isEditing}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label className={labelClasses}>Specialization</label>
+                            <CustomSelect
+                                name="specialization"
+                                value={formData.specialization}
+                                onChange={handleChange}
+                                options={getSpecializations(formData.degree, formData.branch)}
+                                disabled={!isEditing}
+                            />
+                        </div>
+                        <div>
+                            <label className={labelClasses}>Batch Year</label>
+                            <input type="number" name="batch" value={formData.batch} onChange={handleChange} className={inputClasses} disabled={!isEditing} />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className={labelClasses}>CGPA</label>
+                         <div className="relative">
+                            <input type="number" step="0.01" name="cgpa" value={formData.cgpa} onChange={handleChange} className={`${inputClasses} pl-10`} disabled={!isEditing} />
+                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 material-symbols-outlined text-lg">school</span>
+                         </div>
+                         <p className="text-xs text-slate-500 mt-1">Updates to CGPA will reflect on the leaderboard.</p>
+                    </div>
+
+                    {isEditing && (
+                        <div className="pt-4 flex gap-3">
+                            <button type="submit" className="flex-1 bg-primary hover:bg-orange-600 text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/20 transition-all active:scale-95">
+                                Save Changes
+                            </button>
+                        </div>
+                    )}
+                </form>
+
+                <div className="mt-12 pt-8 border-t border-slate-200">
+                    <h3 className="text-red-500 font-bold mb-2">Danger Zone</h3>
+                    <p className="text-slate-500 text-xs mb-4">Once you delete your account, there is no going back. Please be certain.</p>
+                    <button onClick={handleDeleteAccount} className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
+                        <span className="material-symbols-outlined text-sm">delete_forever</span>
+                        Delete Account
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Profile;
