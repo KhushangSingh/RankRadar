@@ -10,7 +10,7 @@ const Navbar = () => {
     const isActive = (path) => location.pathname === path;
 
     return (
-        <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-xl shrink-0">
+        <header className="fixed top-0 inset-x-0 z-50 w-full border-b border-slate-200/50 bg-white/50 backdrop-blur-2xl shadow-[0_4px_30px_rgba(0,0,0,0.04)] transition-all">
             <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
                 {/* Logo Section */}
                 <Link to="/dashboard" className="flex items-center gap-3 shrink-0">

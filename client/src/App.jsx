@@ -26,9 +26,9 @@ const PrivateRoute = ({ children }) => {
 
 const Layout = ({ children }) => {
     return (
-        <div className="flex flex-col min-h-screen bg-background-light font-display overflow-hidden text-slate-900">
+        <div className="flex flex-col min-h-screen bg-background-light font-display text-slate-900">
             <Navbar />
-            <main className="flex-1 overflow-y-auto bg-background-light relative flex flex-col">
+            <main className="flex-1 relative flex flex-col pt-16">
                 {/* Header Gradient Glow */}
                 <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
                 <div className="max-w-7xl mx-auto p-4 sm:p-8 relative z-10 w-full flex-1">
