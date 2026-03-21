@@ -45,7 +45,7 @@ const Navbar = () => {
                 {/* User & Actions */}
                     <div className="flex items-center gap-3 shrink-0">
                         <Link to="/profile" className="flex items-center gap-2 hover:bg-slate-50 p-1.5 rounded-lg transition-colors group">
-                            <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center border-2 border-primary/30 text-slate-700 font-bold text-sm">
+                            <div className="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center border-2 border-white text-slate-700 font-bold text-sm shadow-md">
                                 {user.name.charAt(0).toUpperCase()}
                             </div>
                             <div className="hidden lg:flex flex-col items-start pr-1">
