@@ -12,28 +12,15 @@ const Profile = () => {
     const { addToast, openConfirm } = useContext(ToastContext);
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        cgpa: '',
-        college: '',
-        degree: '',
-        branch: '',
-        specialization: '',
-        batch: ''
+        name: '', email: '', cgpa: '', college: '', degree: '', branch: '', specialization: '', batch: ''
     });
     const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         if (user) {
             setFormData({
-                name: user.name || '',
-                email: user.email || '',
-                cgpa: user.cgpa || '',
-                college: user.college || '',
-                degree: user.degree || '',
-                branch: user.branch || '',
-                specialization: user.specialization || '',
-                batch: user.batch || ''
+                name: user.name || '', email: user.email || '', cgpa: user.cgpa || '', college: user.college || '',
+                degree: user.degree || '', branch: user.branch || '', specialization: user.specialization || '', batch: user.batch || ''
             });
         }
     }, [user]);
@@ -85,22 +72,15 @@ const Profile = () => {
     const labelClasses = "text-xs font-medium text-slate-500 uppercase ml-1 block mb-1";
 
     return (
-        <div className="max-w-2xl mx-auto">
-             <div className="flex justify-between items-center mb-6">
+        <div className="max-w-6xl mx-auto h-full flex flex-col">
+            <div className="flex justify-between items-center mb-6">
                 <h2 className="text-3xl font-bold text-slate-900">My Profile</h2>
                 <button 
                     onClick={() => {
                         if (isEditing) {
-                            // Cancel action - reset form
                             setFormData({
-                                name: user.name || '',
-                                email: user.email || '',
-                                cgpa: user.cgpa || '',
-                                college: user.college || '',
-                                degree: user.degree || '',
-                                branch: user.branch || '',
-                                specialization: user.specialization || '',
-                                batch: user.batch || ''
+                                name: user.name || '', email: user.email || '', cgpa: user.cgpa || '', college: user.college || '',
+                                degree: user.degree || '', branch: user.branch || '', specialization: user.specialization || '', batch: user.batch || ''
                             });
                         }
                         setIsEditing(!isEditing);
@@ -111,117 +91,101 @@ const Profile = () => {
                 </button>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-8 relative overflow-hidden shadow-sm backdrop-blur-xl">
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                        <div className="md:col-span-2 flex items-center gap-4 mb-2">
-                            <div className="w-20 h-20 rounded-full bg-slate-200 flex items-center justify-center border-4 border-slate-50 text-slate-700 font-bold text-3xl shadow-lg">
-                                 {formData.name.charAt(0).toUpperCase()}
-                            </div>
-                            <div>
-                                <h3 className="text-slate-900 text-lg font-bold">{formData.name}</h3>
-                                <p className="text-slate-500 text-sm">{formData.email}</p>
-                            </div>
+            <div className="flex flex-col lg:flex-row gap-6 items-start">
+                
+                {/* Left Column: Sidebar / Profile Info */}
+                <div className="w-full lg:w-1/3 flex flex-col gap-6">
+                    {/* User Info Card */}
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm backdrop-blur-xl flex flex-col items-center text-center">
+                        <div className="w-24 h-24 rounded-full bg-slate-200 flex items-center justify-center border-4 border-slate-50 text-slate-700 font-bold text-4xl shadow-lg mb-4">
+                            {formData.name ? formData.name.charAt(0).toUpperCase() : '?'}
                         </div>
-
-                        <div>
-                            <label className={labelClasses}>Full Name</label>
-                            <input type="text" name="name" value={formData.name} onChange={handleChange} className={inputClasses} disabled={!isEditing} />
-                        </div>
-                         <div>
-                            <label className={labelClasses}>Email</label>
-                            <input type="email" name="email" value={formData.email} onChange={handleChange} className={inputClasses} disabled={!isEditing} />
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <label className={labelClasses}>College</label>
-                        <CustomSelect
-                            name="college"
-                            value={formData.college}
-                            onChange={handleChange}
-                            options={COLLEGE_LIST}
-                            placeholder="Search your college..."
-                            disabled={!isEditing}
-                        />
+                        <h3 className="text-slate-900 text-xl font-bold">{formData.name}</h3>
+                        <p className="text-slate-500 text-sm mb-4">{formData.email}</p>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {/* Account Actions */}
+                    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
                         <div>
-                            <label className={labelClasses}>Degree</label>
-                            <CustomSelect
-                                name="degree"
-                                value={formData.degree}
-                                onChange={handleChange}
-                                options={getDegrees()}
-                                disabled={!isEditing}
-                            />
+                            <h3 className="text-slate-900 font-bold mb-1">Account Actions</h3>
+                            <p className="text-slate-500 text-xs">Sign out of your account on this device.</p>
                         </div>
-                        <div>
-                            <label className={labelClasses}>Branch</label>
-                            <CustomSelect
-                                name="branch"
-                                value={formData.branch}
-                                onChange={handleChange}
-                                options={getBranches(formData.degree)}
-                                disabled={!isEditing}
-                            />
-                        </div>
+                        <button onClick={() => { logout(); navigate('/login'); }} className="w-full py-2.5 bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-bold transition-colors flex justify-center items-center gap-2 shadow-sm">
+                            <span className="material-symbols-outlined text-sm">logout</span>
+                            Log Out
+                        </button>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {/* Danger Zone */}
+                    <div className="bg-red-50/50 border border-red-100 rounded-2xl p-6 shadow-sm flex flex-col gap-4">
                         <div>
-                            <label className={labelClasses}>Specialization</label>
-                            <CustomSelect
-                                name="specialization"
-                                value={formData.specialization}
-                                onChange={handleChange}
-                                options={getSpecializations(formData.degree, formData.branch)}
-                                disabled={!isEditing}
-                            />
+                            <h3 className="text-red-500 font-bold mb-1">Danger Zone</h3>
+                            <p className="text-slate-500 text-xs">Delete your account permanently.</p>
                         </div>
-                        <div>
-                            <label className={labelClasses}>Batch Year</label>
-                            <input type="number" name="batch" value={formData.batch} onChange={handleChange} className={inputClasses} disabled={!isEditing} />
-                        </div>
+                        <button onClick={handleDeleteAccount} className="w-full py-2.5 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-xl text-sm font-bold transition-colors flex justify-center items-center gap-2">
+                            <span className="material-symbols-outlined text-sm">delete_forever</span>
+                            Delete Account
+                        </button>
                     </div>
-
-                    <div>
-                        <label className={labelClasses}>CGPA</label>
-                         <div className="relative">
-                            <input type="number" step="0.01" name="cgpa" value={formData.cgpa} onChange={handleChange} className={`${inputClasses} pl-10`} disabled={!isEditing} />
-                            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 material-symbols-outlined text-lg">school</span>
-                         </div>
-                         <p className="text-xs text-slate-500 mt-1">Updates to CGPA will reflect on the leaderboard.</p>
-                    </div>
-
-                    {isEditing && (
-                        <div className="pt-4 flex gap-3">
-                            <button type="submit" className="flex-1 bg-primary hover:bg-orange-600 text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/20 transition-all active:scale-95">
-                                Save Changes
-                            </button>
-                        </div>
-                    )}
-                </form>
-
-                <div className="mt-8 pt-8 border-t border-red-100">
-                    <h3 className="text-red-500 font-bold mb-2">Danger Zone</h3>
-                    <p className="text-slate-500 text-xs mb-4">Once you delete your account, there is no going back. Please be certain.</p>
-                    <button onClick={handleDeleteAccount} className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-lg text-sm font-medium transition-colors flex items-center gap-2">
-                        <span className="material-symbols-outlined text-sm">delete_forever</span>
-                        Delete Account
-                    </button>
                 </div>
 
-                <div className="mt-8 pt-8 border-t border-slate-200 flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
-                    <div>
-                        <h3 className="text-slate-900 font-bold mb-1">Account Actions</h3>
-                        <p className="text-slate-500 text-xs">Sign out of your account on this device.</p>
-                    </div>
-                    <button onClick={() => { logout(); navigate('/login'); }} className="px-6 py-2.5 bg-slate-100 border border-slate-200 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-bold transition-colors flex items-center gap-2 shadow-sm w-full sm:w-auto justify-center">
-                        <span className="material-symbols-outlined text-sm">logout</span>
-                        Log Out
-                    </button>
+                {/* Right Column: Form */}
+                <div className="w-full lg:w-2/3 bg-white border border-slate-200 rounded-2xl p-6 lg:p-8 shadow-sm backdrop-blur-xl">
+                    <form onSubmit={handleSubmit} className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className={labelClasses}>Full Name</label>
+                                <input type="text" name="name" value={formData.name} onChange={handleChange} className={inputClasses} disabled={!isEditing} />
+                            </div>
+                             <div>
+                                <label className={labelClasses}>Email</label>
+                                <input type="email" name="email" value={formData.email} onChange={handleChange} className={inputClasses} disabled={!isEditing} />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className={labelClasses}>College</label>
+                            <CustomSelect name="college" value={formData.college} onChange={handleChange} options={COLLEGE_LIST} placeholder="Search your college..." disabled={!isEditing} />
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className={labelClasses}>Degree</label>
+                                <CustomSelect name="degree" value={formData.degree} onChange={handleChange} options={getDegrees()} disabled={!isEditing} />
+                            </div>
+                            <div>
+                                <label className={labelClasses}>Branch</label>
+                                <CustomSelect name="branch" value={formData.branch} onChange={handleChange} options={getBranches(formData.degree)} disabled={!isEditing} />
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className={labelClasses}>Specialization</label>
+                                <CustomSelect name="specialization" value={formData.specialization} onChange={handleChange} options={getSpecializations(formData.degree, formData.branch)} disabled={!isEditing} />
+                            </div>
+                            <div>
+                                <label className={labelClasses}>Batch Year</label>
+                                <input type="number" name="batch" value={formData.batch} onChange={handleChange} className={inputClasses} disabled={!isEditing} />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className={labelClasses}>CGPA</label>
+                            <div className="relative">
+                                <input type="number" step="0.01" name="cgpa" value={formData.cgpa} onChange={handleChange} className={`${inputClasses} pl-10`} disabled={!isEditing} />
+                                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 material-symbols-outlined text-lg">school</span>
+                            </div>
+                        </div>
+
+                        {isEditing && (
+                            <div className="pt-4 flex gap-3">
+                                <button type="submit" className="flex-1 bg-primary hover:bg-orange-600 text-white py-3 rounded-xl font-bold shadow-lg shadow-primary/20 transition-all active:scale-95">
+                                    Save Changes
+                                </button>
+                            </div>
+                        )}
+                    </form>
                 </div>
             </div>
         </div>
