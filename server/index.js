@@ -18,15 +18,27 @@ const app = express();
 app.use(helmet());
 
 // ─── CORS ─────────────────────────────────────────────────────────────────────
-const allowedOrigins = process.env.NODE_ENV === 'production'
-  ? [process.env.CLIENT_URL].filter(Boolean)
-  : ['http://localhost:5173', 'http://localhost:3000'];
+const allowedOrigins = [
+  'http://localhost:5173', 
+  'http://localhost:3000',
+  'https://gradevo.vercel.app',
+  'https://www.gradevo.vercel.app',
+  process.env.CLIENT_URL
+].filter(Boolean);
 
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (e.g. mobile apps, curl, Postman)
     if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) return callback(null, true);
+    
+    // Normalize origins to prevent trailing slash errors
+    const normalizedOrigin = origin.replace(/\/$/, "");
+    const normalizedAllowed = allowedOrigins.map(o => o.replace(/\/$/, ""));
+    
+    if (normalizedAllowed.includes(normalizedOrigin)) {
+      return callback(null, true);
+    }
+    
     callback(new Error(`CORS policy: origin ${origin} is not allowed`));
   },
   credentials: true,
