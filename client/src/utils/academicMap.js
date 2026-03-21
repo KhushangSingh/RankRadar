@@ -2,7 +2,7 @@
 
 export const ACADEMIC_MAP = {
   'B.Tech': {
-    CSE: ['Core', 'AIML', 'Data Science', 'Cloud Computing', 'Cyber Security', 'IoT', 'Software Engineering'],
+    CSE: ['Core', 'AIML', 'Data Science', 'Cloud Computing', 'Cyber Security', 'IoT', 'Software Engineering', 'E-Commerce Technology', 'Education Technology', 'Gaming Technology', 'Health Informatics'],
     ECE: ['Core', 'VLSI', 'Embedded Systems', 'Signal Processing', 'IoT', 'Robotics'],
     Electrical: ['Core', 'Power Systems', 'Control Systems', 'Power Electronics', 'Renewable Energy'],
     Mechanical: ['Core', 'Thermal', 'Manufacturing', 'Robotics', 'CAD/CAM', 'Mechatronics'],
