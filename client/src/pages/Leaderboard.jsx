@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 
@@ -6,6 +6,7 @@ const Leaderboard = () => {
     const { user } = useContext(AuthContext);
     const [leaderboard, setLeaderboard] = useState([]);
     const [viewMode, setViewMode] = useState('branch'); // 'branch' or 'specialization'
+    const myRowRef = useRef(null);
     
     // Filters - derived from user context + viewMode
     const [filters, setFilters] = useState({
@@ -48,6 +49,18 @@ const Leaderboard = () => {
         }
     };
 
+    const scrollToMe = () => {
+        if (myRowRef.current) {
+            myRowRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Optional: Flash effect
+            myRowRef.current.classList.add('bg-primary/20');
+            setTimeout(() => {
+                myRowRef.current.classList.remove('bg-primary/20');
+            }, 2000);
+        }
+    };
+
     return (
         <div className="space-y-6">
             <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
@@ -63,7 +76,7 @@ const Leaderboard = () => {
                     </div>
 
                         {/* Filters Toolbar */}
-                    <div className="flex bg-slate-100 p-1 rounded-xl">
+                    <div className="flex bg-slate-100 p-1 rounded-xl md:ml-auto">
                         <button 
                             onClick={() => setViewMode('branch')}
                             className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${viewMode === 'branch' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
@@ -77,6 +90,16 @@ const Leaderboard = () => {
                              {user?.specialization || 'Specialization'} Only
                         </button>
                     </div>
+
+                    {leaderboard.some(s => s.isMe) && (
+                        <button 
+                            onClick={scrollToMe}
+                            className="flex items-center gap-2 px-4 py-2 bg-primary text-white text-xs font-bold rounded-xl shadow-lg shadow-primary/20 hover:scale-105 transition-all"
+                        >
+                            <span className="material-symbols-outlined text-sm">my_location</span>
+                            Find Me
+                        </button>
+                    )}
                 </div>
 
                     {/* Table */}
@@ -93,7 +116,11 @@ const Leaderboard = () => {
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                             {leaderboard.map((student) => (
-                                <tr key={student._id} className={`hover:bg-slate-50 transition-colors group ${student.isMe ? 'bg-primary/5' : ''}`}>
+                                <tr 
+                                    key={student._id} 
+                                    ref={student.isMe ? myRowRef : null}
+                                    className={`hover:bg-slate-50 transition-colors group ${student.isMe ? 'bg-primary/5' : ''}`}
+                                >
                                     <td className="px-6 py-4">
                                         <div className={`w-8 h-8 rounded-lg flex items-center justify-center font-bold text-sm
                                             ${student.rank === 1 ? 'bg-yellow-100 text-yellow-600' : 

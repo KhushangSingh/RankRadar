@@ -76,13 +76,3 @@ export const ACADEMIC_MAP = {
     'Architecture': ['Core', 'Urban Planning', 'Interior Design', 'Landscape Architecture'],
   }
 };
-
-export const getDegrees = () => Object.keys(ACADEMIC_MAP);
-
-export const getBranches = (degree) =>
-  degree && ACADEMIC_MAP[degree] ? Object.keys(ACADEMIC_MAP[degree]) : [];
-
-export const getSpecializations = (degree, branch) =>
-  degree && branch && ACADEMIC_MAP[degree]?.[branch]
-    ? ACADEMIC_MAP[degree][branch]
-    : ['Core'];

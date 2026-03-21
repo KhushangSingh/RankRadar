@@ -10,6 +10,7 @@ const {
   getLeaderboard,
   addFriend,
   getFriends,
+  getAcademicMap
 } = require('../controllers/userController');
 const { protect } = require('../middleware/authMiddleware');
 
@@ -22,5 +23,6 @@ router.delete('/profile', protect, deleteProfile); // To delete profile
 router.get('/leaderboard', protect, getLeaderboard); // Secure leaderboard
 router.post('/add-friend', protect, addFriend); // Add friend via code
 router.get('/friends', protect, getFriends);   // Get populated friends list
+router.get('/academic-map', getAcademicMap);   // Public route for dynamic dropdowns
 
 module.exports = router;

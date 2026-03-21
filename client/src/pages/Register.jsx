@@ -1,8 +1,9 @@
 import React, { useState, useContext } from 'react';
+import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 import ToastContext from '../context/ToastContext';
 import { useNavigate, Link } from 'react-router-dom';
-import { getDegrees, getBranches, getSpecializations } from '../utils/academicMap';
+import { ACADEMIC_MAP as fallbackMap } from '../utils/academicMap';
 import CustomSelect from '../components/CustomSelect';
 import COLLEGE_LIST from '../utils/collegeList';
 
@@ -21,15 +22,36 @@ const Register = () => {
     specialization: 'Core',
     batch: new Date().getFullYear(),
   });
+  const [academicMap, setAcademicMap] = useState(fallbackMap);
+
+  React.useEffect(() => {
+    const fetchMap = async () => {
+      try {
+        const { data } = await axios.get('/api/users/academic-map');
+        // Merge fallback with DB data to ensure everything is present
+        setAcademicMap(prev => ({ ...prev, ...data }));
+      } catch (err) {
+        console.error("Error fetching academic map", err);
+      }
+    };
+    fetchMap();
+  }, []);
+
+  const getDegrees = () => Object.keys(academicMap);
+  const getBranches = (deg) => deg ? Object.keys(academicMap[deg] || {}) : [];
+  const getSpecializations = (deg, br) => (deg && br) ? (academicMap[deg]?.[br] || []) : [];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'degree') {
-      const firstBranch = getBranches(value)[0] || '';
-      const firstSpec = getSpecializations(value, firstBranch)[0] || 'Core';
+      const branches = getBranches(value);
+      const firstBranch = branches[0] || '';
+      const specs = getSpecializations(value, firstBranch);
+      const firstSpec = specs[0] || 'Core';
       setFormData({ ...formData, degree: value, branch: firstBranch, specialization: firstSpec });
     } else if (name === 'branch') {
-      const firstSpec = getSpecializations(formData.degree, value)[0] || 'Core';
+      const specs = getSpecializations(formData.degree, value);
+      const firstSpec = specs[0] || 'Core';
       setFormData({ ...formData, branch: value, specialization: firstSpec });
     } else {
       setFormData({ ...formData, [name]: value });

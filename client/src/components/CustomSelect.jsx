@@ -92,27 +92,44 @@ const CustomSelect = ({ name, value, onChange, options = [], disabled = false, p
                     {/* Options */}
                     <ul className="max-h-44 overflow-y-auto py-1 scrollbar-thin">
                         {filtered.length === 0 ? (
-                            <li className="px-4 py-3 text-sm text-slate-400 text-center">No results found</li>
-                        ) : filtered.map(opt => (
-                            <li key={opt}>
-                                <button
-                                    type="button"
-                                    onClick={() => handleSelect(opt)}
-                                    className={`
-                                        w-full flex items-center justify-between gap-2
-                                        px-4 py-2.5 text-sm font-medium transition-colors text-left
-                                        ${opt === value
-                                            ? 'bg-primary/10 text-primary'
-                                            : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'}
-                                    `}
-                                >
-                                    <span className="leading-snug">{opt}</span>
-                                    {opt === value && (
-                                        <span className="material-symbols-outlined leading-none text-[16px] text-primary shrink-0">check</span>
-                                    )}
-                                </button>
-                            </li>
-                        ))}
+                            search ? (
+                                <li>
+                                    <button
+                                        type="button"
+                                        onClick={() => handleSelect(search)}
+                                        className="w-full flex items-center gap-2 px-4 py-3 text-sm font-bold text-primary hover:bg-primary/5 transition-colors text-left"
+                                    >
+                                        <span className="material-symbols-outlined text-[18px]">add_circle</span>
+                                        Add "{search}"
+                                    </button>
+                                </li>
+                            ) : (
+                                <li className="px-4 py-3 text-sm text-slate-400 text-center">No results found</li>
+                            )
+                        ) : (
+                            <>
+                                {filtered.map(opt => (
+                                    <li key={opt}>
+                                        <button
+                                            type="button"
+                                            onClick={() => handleSelect(opt)}
+                                            className={`
+                                                w-full flex items-center justify-between gap-2
+                                                px-4 py-2.5 text-sm font-medium transition-colors text-left
+                                                ${opt === value
+                                                    ? 'bg-primary/10 text-primary'
+                                                    : 'text-slate-700 hover:bg-slate-50 hover:text-slate-900'}
+                                            `}
+                                        >
+                                            <span className="leading-snug">{opt}</span>
+                                            {opt === value && (
+                                                <span className="material-symbols-outlined leading-none text-[16px] text-primary shrink-0">check</span>
+                                            )}
+                                        </button>
+                                    </li>
+                                ))}
+                            </>
+                        )}
                     </ul>
                 </div>
             )}

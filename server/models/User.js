@@ -50,6 +50,10 @@ const userSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     }],
+    isDummy: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

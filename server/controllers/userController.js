@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const User = require('../models/User');
 const ArchivedUser = require('../models/ArchivedUser');
+const AcademicMapping = require('../models/AcademicMapping');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
@@ -76,6 +77,19 @@ const registerUser = asyncHandler(async (req, res) => {
     friendCode,
     friends: []
   });
+
+  // Save new academic mapping if it doesn't exist
+  if (degree && branch && (specialization || 'Core')) {
+    try {
+      await AcademicMapping.findOneAndUpdate(
+        { degree, branch, specialization: specialization || 'Core' },
+        { degree, branch, specialization: specialization || 'Core' },
+        { upsert: true, new: true }
+      );
+    } catch (err) {
+      console.error('Error saving dynamic mapping:', err);
+    }
+  }
 
   if (user) {
     // Secondary safety: check if the email domain resolves to a *different* known
@@ -185,6 +199,19 @@ const updateProfile = asyncHandler(async (req, res) => {
     if (req.body.password) {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(req.body.password, salt);
+    }
+
+    // Save new academic mapping if it doesn't exist during update
+    if (user.degree && user.branch && user.specialization) {
+      try {
+        await AcademicMapping.findOneAndUpdate(
+          { degree: user.degree, branch: user.branch, specialization: user.specialization },
+          { degree: user.degree, branch: user.branch, specialization: user.specialization },
+          { upsert: true, new: true }
+        );
+      } catch (err) {
+        console.error('Error saving dynamic mapping:', err);
+      }
     }
 
     const updatedUser = await user.save();
@@ -347,6 +374,26 @@ const deleteProfile = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Get hierarchical academic map
+// @route   GET /api/users/academic-map
+// @access  Public
+const getAcademicMap = asyncHandler(async (req, res) => {
+  const mappings = await AcademicMapping.find({});
+  
+  // Format into a tree: { degree: { branch: [specs...] } }
+  const map = {};
+  
+  mappings.forEach(m => {
+    if (!map[m.degree]) map[m.degree] = {};
+    if (!map[m.degree][m.branch]) map[m.degree][m.branch] = [];
+    if (!map[m.degree][m.branch].includes(m.specialization)) {
+      map[m.degree][m.branch].push(m.specialization);
+    }
+  });
+  
+  res.json(map);
+});
+
 // Generate JWT
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -364,4 +411,5 @@ module.exports = {
   getLeaderboard,
   addFriend,
   getFriends,
+  getAcademicMap
 };

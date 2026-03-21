@@ -22,6 +22,7 @@ const archivedUserSchema = mongoose.Schema(
     anonymousName: { type: String },
     friendCode: { type: String },
     friends: [{ type: mongoose.Schema.Types.ObjectId }],
+    isDummy: { type: Boolean, default: false },
 
     // When the original account was created & when it was deleted
     originalCreatedAt: { type: Date },
