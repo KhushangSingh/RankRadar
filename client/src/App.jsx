@@ -26,12 +26,19 @@ const PrivateRoute = ({ children }) => {
 
 const Layout = ({ children }) => {
     return (
-        <div className="flex flex-col min-h-screen bg-background-light font-display text-slate-900">
+        <div className="flex flex-col min-h-screen bg-slate-50 font-display text-slate-900 relative">
+            {/* Ambient Background Orbs to make glassmorphism visibly pop */}
+            <div className="fixed top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
+                <div className="absolute -top-[10%] -left-[10%] w-[40vw] h-[40vh] rounded-full bg-blue-400/20 blur-[120px]"></div>
+                <div className="absolute top-[20%] -right-[5%] w-[30vw] h-[50vh] rounded-full bg-indigo-300/20 blur-[100px]"></div>
+                <div className="absolute -bottom-[10%] left-[20%] w-[35vw] h-[40vh] rounded-full bg-teal-200/20 blur-[100px]"></div>
+            </div>
+
             <Navbar />
-            <main className="flex-1 relative flex flex-col pt-16">
-                {/* Header Gradient Glow */}
-                <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none"></div>
-                <div className="max-w-7xl mx-auto p-4 sm:p-8 relative z-10 w-full flex-1">
+            
+            <main className="flex-1 relative flex flex-col pt-20 z-10">
+                <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-primary/10 to-transparent pointer-events-none"></div>
+                <div className="max-w-7xl mx-auto p-4 sm:p-8 relative z-20 w-full flex-1">
                     {children}
                 </div>
                 <Footer />
