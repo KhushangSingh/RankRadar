@@ -36,30 +36,27 @@ const LandingPage = () => {
             </nav>
 
             {/* Hero Section */}
-            <header className="max-w-7xl mx-auto px-6 py-20 lg:py-32 grid lg:grid-cols-2 gap-12 items-center">
-                <div className="space-y-8">
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-100 text-orange-600 font-bold text-xs uppercase tracking-widest">
+            <header className="max-w-7xl mx-auto px-6 py-20 lg:py-32 flex flex-col items-center text-center">
+                <div className="space-y-6 max-w-3xl">
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-100 text-orange-600 font-bold text-xs uppercase tracking-widest mx-auto">
                         <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
                         Live College Rankings
                     </div>
-                    <h1 className="text-5xl lg:text-7xl font-black tracking-tight leading-[1.1] text-slate-900">
+                    <h1 className="text-5xl lg:text-7xl font-black tracking-tight leading-[1.1] text-slate-900 mx-auto">
                         Know Where You <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-orange-600">Stand.</span>
                     </h1>
-                    <p className="text-lg text-slate-500 font-medium max-w-lg leading-relaxed">
+                    <p className="text-lg text-slate-500 font-medium leading-relaxed max-w-2xl mx-auto">
                         Gradevo connects with your college database to provide real-time academic rankings. Compare your performance with peers, batchmates, and your entire department securely.
                     </p>
-                    <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                        <Link to="/register" className="px-8 py-4 rounded-2xl font-bold bg-orange-500 text-white text-lg hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/30 flex items-center justify-center gap-2 group">
+                    <div className="flex justify-center pt-6">
+                        <Link to="/register" className="px-6 py-3 rounded-xl font-bold bg-orange-500 text-white text-base hover:bg-orange-600 transition-all shadow-xl shadow-orange-500/30 flex items-center justify-center gap-2 group w-fit">
                             Check My Rank
-                            <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
-                        </Link>
-                        <Link to="/login" className="px-8 py-4 rounded-2xl font-bold bg-white border-2 border-slate-100 text-slate-700 text-lg hover:border-slate-200 hover:bg-slate-50 transition-all flex items-center justify-center">
-                            Student Login
+                            <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
                         </Link>
                     </div>
 
-                    <div className="pt-8 flex items-center gap-8 text-slate-400 text-sm font-bold">
+                    <div className="pt-8 flex items-center justify-center gap-8 text-slate-400 text-sm font-bold">
                         <div className="flex items-center gap-2">
                             <span className="material-symbols-outlined text-green-500">check_circle</span>
                             <span>Verified Students Only</span>
@@ -72,13 +69,13 @@ const LandingPage = () => {
                 </div>
 
                 {/* Hero Visual */}
-                <div className="relative">
+                <div className="relative mt-20 w-full max-w-4xl">
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-orange-200/30 rounded-full blur-3xl"></div>
                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] bg-orange-400/20 rounded-full blur-2xl"></div>
 
-                    <div className="relative z-10 grid gap-6">
+                    <div className="relative z-10 flex flex-col sm:flex-row items-center justify-center gap-6">
                         {/* Fake Stat Card 1 */}
-                        <div className="bg-white p-6 rounded-3xl shadow-xl border border-slate-100 transform rotate-[-6deg] hover:rotate-0 transition-transform duration-500 translate-y-8 w-80 mx-auto lg:ml-auto">
+                        <div className="bg-white p-6 rounded-3xl shadow-xl border border-slate-100 transform rotate-[-6deg] hover:rotate-0 transition-transform duration-500 sm:translate-y-8 w-80">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600">
                                     <span className="material-symbols-outlined">school</span>
@@ -93,7 +90,7 @@ const LandingPage = () => {
                         </div>
 
                         {/* Fake Stat Card 2 */}
-                        <div className="bg-slate-900 p-6 rounded-3xl shadow-2xl shadow-slate-900/20 transform rotate-[6deg] hover:rotate-0 transition-transform duration-500 w-80 mx-auto lg:mr-auto text-white">
+                        <div className="bg-slate-900 p-6 rounded-3xl shadow-2xl shadow-slate-900/20 transform rotate-[6deg] hover:rotate-0 transition-transform duration-500 w-80 text-white">
                             <div className="flex justify-between items-start mb-8">
                                 <div>
                                     <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Current Rank</div>
