@@ -10,6 +10,8 @@ import Profile from './pages/Profile';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import LandingPage from './pages/LandingPage';
+import Privacy from './pages/Privacy';
+import Terms from './pages/Terms';
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
@@ -45,6 +47,19 @@ const Layout = ({ children }) => {
             </main>
         </div>
     );
+};
+
+const LegalLayout = ({ children }) => {
+  return (
+    <div className="flex flex-col min-h-screen bg-slate-50 font-display text-slate-900 relative">
+      <main className="flex-1 relative flex flex-col pt-8 z-10">
+        <div className="max-w-7xl mx-auto p-4 sm:p-8 relative z-20 w-full flex-1">
+          {children}
+        </div>
+        <Footer />
+      </main>
+    </div>
+  );
 };
 
 function App() {
@@ -83,6 +98,16 @@ function App() {
                   <Profile />
               </Layout>
             </PrivateRoute>
+          } />
+          <Route path="/privacy" element={
+            <LegalLayout>
+              <Privacy />
+            </LegalLayout>
+          } />
+          <Route path="/terms" element={
+            <LegalLayout>
+              <Terms />
+            </LegalLayout>
           } />
           {/* Login and Register separate from Layout to avoid sidebar visibility */}
           <Route path="/login" element={<Login />} />

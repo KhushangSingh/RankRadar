@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = ({ theme = 'light' }) => {
     const isDark = theme === 'dark';
@@ -8,7 +9,6 @@ const Footer = ({ theme = 'light' }) => {
                 <div className="flex flex-col md:flex-row items-center gap-2 md:gap-6">
                     <p className={`font-bold text-sm ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>© {new Date().getFullYear()} Gradevo. All rights reserved.</p>
                     <div className={`hidden md:block w-1.5 h-1.5 rounded-full ${isDark ? 'bg-white/10' : 'bg-slate-200'}`}></div>
-                    <div className="hidden">
                     <a
                         href="http://khushangsingh.vercel.app/"
                         target="_blank"
@@ -16,14 +16,13 @@ const Footer = ({ theme = 'light' }) => {
                         className={`font-bold text-sm transition-colors flex items-center gap-1.5 ${isDark ? 'text-slate-500 hover:text-white' : 'text-slate-400 hover:text-primary'}`}
                     >
                         <span className="material-symbols-outlined text-sm">account_circle</span>
-                        Developer
+                        The Developer
                     </a>
-                    </div>
                 </div>
 
                 <div className="flex items-center gap-6">
-                    <a href="#" className={`font-bold text-sm transition-colors ${isDark ? 'text-slate-500 hover:text-white' : 'text-slate-400 hover:text-slate-900'}`}>Privacy</a>
-                    <a href="#" className={`font-bold text-sm transition-colors ${isDark ? 'text-slate-500 hover:text-white' : 'text-slate-400 hover:text-slate-900'}`}>Terms</a>
+                    <Link to="/privacy" className={`font-bold text-sm transition-colors ${isDark ? 'text-slate-500 hover:text-white' : 'text-slate-400 hover:text-slate-900'}`}>Privacy</Link>
+                    <Link to="/terms" className={`font-bold text-sm transition-colors ${isDark ? 'text-slate-500 hover:text-white' : 'text-slate-400 hover:text-slate-900'}`}>Terms</Link>
                 </div>
             </div>
         </footer>
